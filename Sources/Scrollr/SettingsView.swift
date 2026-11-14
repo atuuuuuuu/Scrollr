@@ -18,7 +18,6 @@ struct SettingsView: View {
 
 private struct GeneralPane: View {
     @ObservedObject var app: Controller
-    @AppStorage("showIcon") private var showIcon = true
     @State private var confirmReset = false
 
     var body: some View {
@@ -55,7 +54,7 @@ private struct GeneralPane: View {
 
             Section("Behavior") {
                 Toggle("Launch at login", isOn: Binding(get: { app.launchAtLogin }, set: app.setLaunchAtLogin))
-                Toggle(isOn: $showIcon) {
+                Toggle(isOn: $app.showIcon) {
                     Text("Show in menu bar")
                     Text("When hidden, open Scrollr again from Applications to get the icon and Settings back.")
                 }

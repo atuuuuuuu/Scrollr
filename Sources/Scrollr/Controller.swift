@@ -2,6 +2,7 @@ import AppKit
 import ServiceManagement
 
 final class Controller: ObservableObject {
+    static let shared = Controller()
     private let defaults = UserDefaults.standard
 
     @Published var enabled: Bool { didSet { save(enabled, "enabled") } }
@@ -10,6 +11,9 @@ final class Controller: ObservableObject {
     @Published var autoDetect: Bool { didSet { save(autoDetect, "autoDetect") } }
     /// Mice the user switched off individually (ids from `Mice.Mouse`).
     @Published var excluded: Set<String> { didSet { save(Array(excluded), "excluded") } }
+    /// Menu bar icon. One observed source of truth: writing UserDefaults directly lost the race with MenuBarExtra,
+    /// which pushed its stale `isInserted` back and hid the icon again.
+    @Published var showIcon: Bool { didSet { save(showIcon, "showIcon") } }
 
     @Published private(set) var mice: [Mice.Mouse] = []
     @Published private(set) var trusted = AXIsProcessTrusted()
@@ -28,6 +32,7 @@ final class Controller: ObservableObject {
         horizontal = defaults.bool(forKey: "horizontal")
         autoDetect = defaults.bool(forKey: "autoDetect")
         excluded = Set(defaults.stringArray(forKey: "excluded") ?? [])
+        showIcon = defaults.bool(forKey: "showIcon")
 
         hid.onChange = { [weak self] in self?.mice = self?.hid.connected ?? [] }
         mice = hid.connected
@@ -131,7 +136,7 @@ final class Controller: ObservableObject {
         vertical = true
         horizontal = true
         autoDetect = true
-        defaults.set(true, forKey: "showIcon") // read by @AppStorage in the scene and Settings
+        showIcon = true
         excluded = []
         if launchAtLogin { setLaunchAtLogin(false) }
     }
