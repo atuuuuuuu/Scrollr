@@ -83,7 +83,8 @@ controls, never pointer movement. That keeps it idle even with an 8000 Hz gaming
 Click the Scrollr icon in the menu bar:
 
 <div align="center">
-  <img src="assets/menu.png" alt="Scrollr menu: status line, Reverse Mouse Scrolling, Connected Mice with one ATK F1 mouse ticked, Settings and Quit" width="420">
+  <img src="assets/showcase.png" alt="The Scrollr menu bar icon with its menu open (status line, Reverse Mouse Scrolling, Connected Mice with one ATK F1 mouse ticked, Settings and Quit) next to the Mice tab of the Settings window" width="100%">
+  <br><sub>Screenshot of Scrollr 1.0.0 on macOS 27.</sub>
 </div>
 
 - **Reverse Mouse Scrolling** switches everything on or off.
