@@ -3,6 +3,9 @@ import SwiftUI
 @main
 struct ScrollrApp: App {
     @NSApplicationDelegateAdaptor private var delegate: AppDelegate
+    @Environment(\.openSettings) private var openSettings
+    /// Lives in the scene (not the controller) so hiding the icon redraws the menu bar right away.
+    @AppStorage("showIcon") private var showIcon = true
 
     init() {
         if let i = CommandLine.arguments.firstIndex(of: "--render-art"), i + 1 < CommandLine.arguments.count {
@@ -12,10 +15,10 @@ struct ScrollrApp: App {
     }
 
     var body: some Scene {
-        MenuBarExtra(isInserted: Binding(get: { delegate.app.showIcon }, set: { delegate.app.showIcon = $0 })) {
+        MenuBarExtra(isInserted: $showIcon) {
             MenuContent(app: delegate.app)
         } label: {
-            MenuIcon(app: delegate.app)
+            MenuIcon(app: delegate.app).onAppear { delegate.openSettings = openSettings }
         }
         Settings {
             SettingsView(app: delegate.app)
@@ -25,10 +28,16 @@ struct ScrollrApp: App {
 
 final class AppDelegate: NSObject, NSApplicationDelegate {
     let app = Controller()
+    /// Captured from the menu bar label, the one view that is always alive while the icon shows.
+    var openSettings: OpenSettingsAction?
 
-    /// Opening Scrollr again (Finder, Spotlight) brings a hidden menu bar icon back.
+    /// Opening Scrollr again (Finder, Spotlight) brings a hidden menu bar icon back and shows Settings.
     func applicationShouldHandleReopen(_ sender: NSApplication, hasVisibleWindows: Bool) -> Bool {
-        app.showIcon = true
+        UserDefaults.standard.set(true, forKey: "showIcon")
+        DispatchQueue.main.async { [self] in // after the label has appeared and handed over openSettings
+            NSApp.activate()
+            openSettings?()
+        }
         return true
     }
 }

@@ -8,7 +8,6 @@ final class Controller: ObservableObject {
     @Published var vertical: Bool { didSet { save(vertical, "vertical") } }
     @Published var horizontal: Bool { didSet { save(horizontal, "horizontal") } }
     @Published var autoDetect: Bool { didSet { save(autoDetect, "autoDetect") } }
-    @Published var showIcon: Bool { didSet { save(showIcon, "showIcon") } }
     /// Mice the user switched off individually (ids from `Mice.Mouse`).
     @Published var excluded: Set<String> { didSet { save(Array(excluded), "excluded") } }
 
@@ -28,7 +27,6 @@ final class Controller: ObservableObject {
         vertical = defaults.bool(forKey: "vertical")
         horizontal = defaults.bool(forKey: "horizontal")
         autoDetect = defaults.bool(forKey: "autoDetect")
-        showIcon = defaults.bool(forKey: "showIcon")
         excluded = Set(defaults.stringArray(forKey: "excluded") ?? [])
 
         hid.onChange = { [weak self] in self?.mice = self?.hid.connected ?? [] }
@@ -133,7 +131,7 @@ final class Controller: ObservableObject {
         vertical = true
         horizontal = true
         autoDetect = true
-        showIcon = true
+        defaults.set(true, forKey: "showIcon") // read by @AppStorage in the scene and Settings
         excluded = []
         if launchAtLogin { setLaunchAtLogin(false) }
     }
