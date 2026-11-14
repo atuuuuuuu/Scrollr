@@ -59,7 +59,7 @@ controls, never pointer movement. That keeps it idle even with an 8000 Hz gaming
 - **Menu bar status.** The icon dims when nothing is being reversed; the menu shows what Scrollr is doing and which
   mice are connected.
 - **Launch at login** and an optional hidden menu bar icon.
-- **Lightweight.** Under 40 MB of memory, no background polling, no network access at all.
+- **Lightweight.** About 50 MB of memory, no background polling, no network access at all.
 
 ## Install
 
