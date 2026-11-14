@@ -4,18 +4,20 @@ import SwiftUI
 struct ScrollrApp: App {
     @NSApplicationDelegateAdaptor private var delegate: AppDelegate
     @Environment(\.openSettings) private var openSettings
-    /// Observed here so the menu bar redraws as soon as `showIcon` changes.
-    @ObservedObject private var app = Controller.shared
+    /// Observed here so the menu bar redraws as soon as `showIcon` changes. Set after the art check in `init`.
+    @ObservedObject private var app: Controller
 
     init() {
         if let i = CommandLine.arguments.firstIndex(of: "--render-art"), i + 1 < CommandLine.arguments.count {
             MainActor.assumeIsolated { ArtRenderer.run(CommandLine.arguments[i + 1]) }
             exit(0)
         }
+        _app = ObservedObject(wrappedValue: .shared)
     }
 
     var body: some Scene {
-        MenuBarExtra(isInserted: $app.showIcon) {
+        // MenuBarExtra writes isInserted back on every update; skipping equal writes stops an endless redraw loop.
+        MenuBarExtra(isInserted: Binding(get: { app.showIcon }, set: { if $0 != app.showIcon { app.showIcon = $0 } })) {
             MenuContent(app: delegate.app)
         } label: {
             MenuIcon(app: delegate.app).onAppear { delegate.openSettings = openSettings }
