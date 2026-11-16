@@ -63,6 +63,12 @@ controls, never pointer movement. That keeps it idle even with an 8000 Hz gaming
 
 ## Install
 
+```bash
+brew install --cask atuuuuuuu/tap/scrollr
+```
+
+Then follow steps 3 and 4 below. Or install by hand:
+
 1. Download **`Scrollr-macOS.zip`** from the [latest release](https://github.com/atuuuuuuu/Scrollr/releases/latest)
    and unzip it.
 2. Move **Scrollr** to your **Applications** folder and open it.
@@ -213,3 +219,6 @@ mouse, and a notarized build.
 [MIT](LICENSE) © 2026 atu
 
 If Scrollr fixed your scroll wheel, a ⭐ helps other Mac users find it.
+
+Also by atu: **[Convrt](https://github.com/atuuuuuuu/Convrt)**, hold Shift while dragging a file to convert it
+(HEIC to JPG, MOV to MP4, images to PDF and more), fully offline.
